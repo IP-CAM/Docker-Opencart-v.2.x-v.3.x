@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+
+  web:
+    image: bved/php-apache:5.6
+    depends_on:
+      - opencart
+      - mysql
+    volumes:
+      - www:/var/www/html
+    ports:
+        - "80:80"
+
+  opencart:
+    image: bved/opencart:<version>.qs
+    volumes:
+          - www:/www
+          - mysql:/mysql
+    tty: true
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: opencart
+
+volumes:
+  www:
+  mysql:
